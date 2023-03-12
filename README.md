@@ -1,4 +1,5 @@
 
+
 # <span style="color:blue">fastLinearAlgebra</span>
 
 Quick review of linear algebra. Some facility with R helpful but not required.
@@ -31,10 +32,15 @@ Example:   The dot product of (2,5,1.2) and (0,3.3,8) is
 In R:
 
 ``` r
-function dotProd(x,y) {
-   if (length(x) != length((y)) stop('x,y must be of the same length')
-   sum(x*y))
+dotProd <- function(x,y) {
+   if (length(x) != length(y)) stop('x,y must be of the same length')
+   sum(x*y)
 }
+
+# example
+dotProd(c(3,2),c(-1.5,4))
+# 3.5
+
 ```
 
 
@@ -97,7 +103,29 @@ expression Mv.  It is defined this way:
 > The number in the i<sup>th</sup> row of Mv is the inner product with row i of
 > M with v.
 
+In R:
+
+``` r
+mTimesv <- function(M,v) 
+{
+   if (ncol(M) != length(v)) stop('incompatible sizes')
+   mvProduct <- vector(length=length(v))
+   for (i in 1:nrow(M)) 
+      mvProduct[i] <- dotProd(M[i,],v)
+   mvProduct
+}
+#example
+u <- rbind(c(1,5),c(2,2))
+u
+#     1    5
+#     2    2
+w <- c(5.5,3)
+mTimesv(u,v)
+# 20.5 17.0
+
+
 **The reader should make absolutely sure that he/she understands how in
 this manner, matrices provide us with a way to compactly describe
-systems of linear equations.  Really, no kidding; don't go further until
-you understand this--meaning you could explain it to others.**
+systems of linear equations.**  Simple, yes, but really, no kidding;
+don't go further until you understand specifically the role of dot
+products here--meaning you could explain it to others.

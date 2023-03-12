@@ -122,10 +122,12 @@ u
 w <- c(5.5,3)
 mTimesv(u,v)
 # 20.5 17.0
-
+```
 
 **The reader should make absolutely sure that he/she understands how in
 this manner, matrices provide us with a way to compactly describe
-systems of linear equations.**  Simple, yes, but really, no kidding;
+systems of linear equations.**
+
+Simple, yes, but really, no kidding;
 don't go further until you understand specifically the role of dot
 products here--meaning you could explain it to others.

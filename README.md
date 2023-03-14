@@ -43,8 +43,9 @@ dotProd(c(3,2),c(-1.5,4))
 
 ```
 
-
 # Lesson 2: Matrices and Matrix Products
+
+## Matrix-vector products
 
 You probably studies *simultaneous linear equations* in high school,
 e.g.
@@ -124,10 +125,50 @@ mTimesv(u,v)
 # 20.5 17.0
 ```
 
-**The reader should make absolutely sure that he/she understands how in
-this manner, matrices provide us with a way to compactly describe
-systems of linear equations.**
+So, the matrix-vector product Mv is equal to
 
-Simple, yes, but really, no kidding;
-don't go further until you understand specifically the role of dot
-products here--meaning you could explain it to others.
+$$
+\left (
+\begin{array}{r}
+3a+2b \\
+2a - 2b \\
+\end{array}
+\right )
+$$
+
+So, our equation Mv = w is
+
+$$
+\left (
+\begin{array}{r}
+3a+2b \\
+2a - 2b \\
+\end{array}
+\right ) = 
+\left (
+\begin{array}{r}
+8 \\
+4 \\
+\end{array}
+\right ) 
+$$
+
+Setting equal the corresponding components of each side, we have
+
+3a + 2b = 8
+<br>
+a - 2b = 4
+
+i.e. our original set of equations.  So, the matrix forumulation Mv = w
+is indeed equivalent to the original equations.
+
+
+
+**The reader should make absolutely sure that he/she understands (a) how in
+this manner, matrices provide us with a way to compactly describe
+systems of linear equations, and (b) the role of dot products in
+defining matrix-vector multiplication.**
+
+Simple, yes, but really, no kidding; don't go further until you
+understand things well--meaning you could explain it to others.
+

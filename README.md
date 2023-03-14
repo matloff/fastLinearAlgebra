@@ -172,3 +172,12 @@ defining matrix-vector multiplication.**
 Simple, yes, but really, no kidding; don't go further until you
 understand things well--meaning you could explain it to others.
 
+## Matrix-matrix products
+
+We built matrix-vector multiplication by using dot product as the base.
+Now we will build matrix-matrix multiplication by using matrix-vector
+multiplication as the base.
+
+> The j<sup>th</sup> column of a matrix product MQ is the product of M
+> with the j<sup>th</sup> column of Q.
+

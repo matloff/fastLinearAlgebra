@@ -12,7 +12,7 @@ The main target audience is data science students and professionals who
 have some previous background in linear algebra but now need a review.
 
 The R language is used for examples but is not necessary for following
-the presentation.
+the mathematical presentation.
 
 # Lesson 1: Vectors and Dot Products
 
@@ -47,7 +47,7 @@ dotProd(c(3,2),c(-1.5,4))
 
 ## Matrix-vector products
 
-You probably studies *simultaneous linear equations* in high school,
+You probably studied *simultaneous linear equations* in high school,
 e.g.
 
 3a + 2b = 8
@@ -96,10 +96,16 @@ w =\left (
 $$
 
 The matrix M is said to be of size 2x2 (2 rows, 2 columns), while v and
-w are each matrices of size of 2x2.
+w, if considered as matrices, are each of size of 2x1.
+
+Note: We are displaying the vectors v and w here as columns, but
+sometimes they will be shown as rows.  Either way, the key point is that
+a vector is an ordered set of numbers, however it is displayed.
 
 Now, what does that matrix equation mean?  First, consider the
-expression Mv.  It is defined this way:
+expression Mv.  Motivated by our comments above regarding the
+correspondence between linear equations and inner prodcts, we define a
+matrix-vactor product this way:
 
 > The number in the i<sup>th</sup> row of Mv is the inner product with row i of
 > M with v.
@@ -110,7 +116,9 @@ In R:
 mTimesv <- function(M,v) 
 {
    if (ncol(M) != length(v)) stop('incompatible sizes')
+   # prepare space for the output vector
    mvProduct <- vector(length=length(v))
+   # build the output vector
    for (i in 1:nrow(M)) 
       mvProduct[i] <- dotProd(M[i,],v)
    mvProduct
@@ -136,7 +144,7 @@ $$
 \right )
 $$
 
-So, our equation Mv = w is
+and our equation Mv = w is
 
 $$
 \left (
@@ -178,14 +186,29 @@ We built matrix-vector multiplication by using dot product as the base.
 Now we will build matrix-matrix multiplication by using matrix-vector
 multiplication as the base.
 
-> The j<sup>th</sup> column of a matrix product MQ is the product of M
-> with the j<sup>th</sup> column of Q.
+> The j<sup>th</sup> column of a matrix-matrix product MQ is the product
+> of M with the j<sup>th</sup> column of Q.
 
 In R:
 
 ``` r
 
+# matrix times matrix
+mTimesq <- function(M,Q) 
+{
+   if (ncol(M) != nrow(Q)) stop('nonconformable factors')
+   # prepare space for building the output matrix
+   mq <- matrix(nrow=nrow(M),ncol=ncol(Q))
+   # build output matrix
+   for (j in 1:ncol(Q)) {
+      mq[,j] <- mTimesv(M,Q[,j])
+   }
+   mq
+}
+
 ```
+
+## Or, build from vector-times-matrix
 
 By the way, alternatively we could have first defined wR, i.e.
 vector-matrix multiplication, yielding another vector whose
@@ -194,3 +217,48 @@ We could then build on this to define the matrix multiplication LR.
 
 Either way, it's very important that the reader view the process in this
 way, called *partitioned matrices*.  
+
+## Again, the partitioned-matrices view is key
+
+Look at our matrix-vector product Mv.  Let's denote row i of M by
+M<sub>i.</sub>.  Then our building matrix-veckor product from dot
+product can be displayed symbolicly, for an r-row matrix M:
+
+by the equation
+
+
+$$
+M = \left (
+\begin{array}{r}
+M_{1.} \\
+M_{2.} \\
+... \\
+M_{r.} \\
+\end{array}
+\right ) v
+$$
+
+$$
+= \left (
+\begin{array}{r}
+dot(M_{1.},v) \\
+dot(M_{2.},v) \\
+\end{array}
+\right ) 
+$$
+
+where dot(g,h) means the dot product of the vectors g and h.
+
+Similarly, for the matrix-matrix product MQ, our above formulation
+can be written symbolicly as follows, with 
+Q<sub>.j</sub> symbolizing column j of Q and writing c for the number of
+columns of Q::
+
+$$
+\left (
+M Q_{.1},...,M Q_{.c}
+\right )
+$$
+
+Mastering this way of visualizing matrix projects will go a long way to
+helping you master linear algebra.

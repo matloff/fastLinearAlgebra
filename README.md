@@ -181,3 +181,16 @@ multiplication as the base.
 > The j<sup>th</sup> column of a matrix product MQ is the product of M
 > with the j<sup>th</sup> column of Q.
 
+In R:
+
+``` r
+
+```
+
+By the way, alternatively we could have first defined wR, i.e.
+vector-matrix multiplication, yielding another vector whose
+j<sup>th</sup> element is the dot product of w and column j of R.
+We could then build on this to define the matrix multiplication LR.
+
+Either way, it's very important that the reader view the process in this
+way, called *partitioned matrices*.  

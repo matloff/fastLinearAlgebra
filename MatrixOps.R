@@ -13,4 +13,8 @@ mTimesv <- function(M,v)
    mvProduct
 }
 
+mTimess <- function() 
+{
+
+}
 

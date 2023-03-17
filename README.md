@@ -218,17 +218,15 @@ We could then build on this to define the matrix multiplication LR.
 Either way, it's very important that the reader view the process in this
 way, called *partitioned matrices*.  
 
-## Again, the partitioned-matrices view is key
+## Partitioned matrices: an invaluable visualization tool 
 
 Look at our matrix-vector product Mv.  Let's denote row i of M by
-M<sub>i.</sub>.  Then our building matrix-veckor product from dot
-product can be displayed symbolicly, for an r-row matrix M:
-
-by the equation
-
+M<sub>i.</sub>.  Then our building matrix-vector product 
+can be displayed--and most important, visualized--symbolicly. 
+For an r-row matrix M and a conformable vector v, we think of Mv as
 
 $$
-M = \left (
+\left (
 \begin{array}{r}
 M_{1.} \\
 M_{2.} \\
@@ -241,18 +239,37 @@ $$
 $$
 = \left (
 \begin{array}{r}
-dot(M_{1.},v) \\
-dot(M_{2.},v) \\
+M_{1.} v \\
+M_{2.}  v\\
+... \\
+M_{r.}  v\\
+\end{array}
+\right )
+$$
+
+where m<sub>i.</sub>v is interpreted as the dot product of
+M<sub>i.</sub> with v.
+
+The expression
+$$
+\left (
+\begin{array}{r}
+M_{1.} \\
+M_{2.} \\
+... \\
+M_{r.} \\
 \end{array}
 \right ) 
 $$
 
-where dot(g,h) means the dot product of the vectors g and h.
+is a column of r things, so if you squint, it "looks" like a column of r
+numbers.  It wil turn out later that this way to visualize things is
+useful.
 
-Similarly, for the matrix-matrix product MQ, our above formulation
-can be written symbolicly as follows, with 
-Q<sub>.j</sub> symbolizing column j of Q and writing c for the number of
-columns of Q::
+
+Similarly, for the matrix-matrix product MQ, our above formulation can
+be written symbolicly as follows, with Q<sub>.j</sub> symbolizing column
+j of Q, j = 1,...,c, we think of MQ as 
 
 $$
 \left (

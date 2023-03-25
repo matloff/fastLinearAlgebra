@@ -2,9 +2,14 @@
 
 # <span style="color:blue">fastLinearAlgebra</span>
 
-Quick review of linear algebra. Some facility with R helpful but not required.
+Quick review of linear algebra. 
 
-### Norm Matloff, Prof. of Computer Science, UC Davis; [my bio](http://heather.cs.ucdavis.edu/matloff.html)
+## Author:
+
+Norm Matloff <br>
+Prof. of Computer Science <br>
+UC Davis <br>
+[my bio](http://heather.cs.ucdavis.edu/matloff.html)
 
 # Who Is This for?
 
@@ -66,7 +71,8 @@ This motivates the *matrix equation*
 
 M v = w
 
-where
+in which the left-hand side consists of multiplication of a vector v by
+a matrix M.  Here
 
 $$
 M = \left (

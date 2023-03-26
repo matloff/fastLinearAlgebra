@@ -113,8 +113,8 @@ expression Mv.  Motivated by our comments above regarding the
 correspondence between linear equations and inner prodcts, we define a
 matrix-vactor product this way:
 
-> The number in the i<sup>th</sup> row of Mv is the inner product with row i of
-> M with v.
+> Mv is a new vector, of the same length as v.  The i<sup>th</sup>
+> number in the new vecotr is the inner product with row i of M with v.
 
 In R:
 
@@ -139,7 +139,8 @@ mTimesv(u,v)
 # 20.5 17.0
 ```
 
-So, the matrix-vector product Mv is equal to
+So, the matrix-vector product Mv in our simultaneous linear equations
+example above is equal to
 
 $$
 \left (
@@ -189,9 +190,11 @@ understand things well--meaning you could explain it to others.
 ## Matrix-matrix products
 
 We built matrix-vector multiplication by using dot product as the base.
-Now we will build matrix-matrix multiplication by using matrix-vector
-multiplication as the base.
+Now we will in turn build matrix-matrix multiplication by using
+matrix-vector multiplication as the base.
 
+> The matrix-matrix product is a new matrix having the same number of
+> rows as M and the same number of columns as Q.
 > The j<sup>th</sup> column of a matrix-matrix product MQ is the product
 > of M with the j<sup>th</sup> column of Q.
 
@@ -219,7 +222,7 @@ mTimesq <- function(M,Q)
 By the way, alternatively we could have first defined wR, i.e.
 vector-matrix multiplication, yielding another vector whose
 j<sup>th</sup> element is the dot product of w and column j of R.
-We could then build on this to define the matrix multiplication LR.
+We could then build on this to define matrix-matrix multiplication LR.
 
 Either way, it's very important that the reader view the process in this
 way, called *partitioned matrices*.  
@@ -253,7 +256,7 @@ M_{r.}  v\\
 \right )
 $$
 
-where m<sub>i.</sub>v is interpreted as the dot product of
+where M<sub>i.</sub>v is interpreted as the dot product of
 M<sub>i.</sub> with v.
 
 The expression
@@ -285,3 +288,11 @@ $$
 
 Mastering this way of visualizing matrix projects will go a long way to
 helping you master linear algebra.
+
+## The "real" way we do matrix multiplication in R
+
+Though the function mtimesq() above does produce the correct answer, it
+is not efficient.  Instead, we use a special operator.
+
+
+

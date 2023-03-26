@@ -289,10 +289,123 @@ $$
 Mastering this way of visualizing matrix projects will go a long way to
 helping you master linear algebra.
 
-## The "real" way we do matrix multiplication in R
+## "Real" matrix multiplication in R, etc.
 
 Though the function mtimesq() above does produce the correct answer, it
-is not efficient.  Instead, we use a special operator.
+is not efficient.  Instead, we use a special operator, %*%.
 
+### %*%
 
+``` r
+ A <- rbind(4:5,8:9)
+> A
+     [,1] [,2]
+[1,]    4    5
+[2,]    8    9
+> B <- rbind(c(1.5,0),c(1,1))
+> B
+     [,1] [,2]
+[1,]  1.5    0
+[2,]  1.0    1
+> A %*% B
+     [,1] [,2]
+[1,]   11    5
+[2,]   21    9
+```
 
+The %*% operator is written in C, so it is faster.  So, use it rather
+than mtimesq(), but keep the latter in mind for visualization purposes.
+
+### Internal storage
+
+A computer's memory is linear, i.e. Word 0, then Word 1, Word 2 and so
+on.  (If our data consists of numbers, one number is stored per word.
+For character data, m characters are stored per word, where m is the
+word size in bytes.)  But a matrix is two-dimensional, i.e. nonlinear.
+So, how is a matrix stored?
+
+The two main storage schemes are *column-major order* and 
+*row-major order*.  C uses the former, while R uses the latter,
+meaning that first all of column 1 is stored, then column 2, etc.
+
+So for instance the matrix A above is stored as 4, 8, 5, 9.  Indeed, we
+could have created A using that knowledge:
+
+``` r
+> matrix(c(4,8,5,9),ncol=2)
+     [,1] [,2]
+[1,]    4    5
+[2,]    8    9
+```
+
+### Vectors as matrices, and vice versa
+
+Consider this multiplication:
+
+``` r
+ A %*% c(3,2)
+     [,1]
+[1,]   22
+[2,]   42
+```
+
+Even though the (3,2) was not a matrix, R treated it as a 2x1 matrix
+(it would not be conformable if it were treated as 1x2),
+and it did the multiplication.  And look at this one:
+
+``` r
+> c(3,2) %*% A
+     [,1] [,2]
+[1,]   28   33
+```
+
+R treated the (3,2) as a 1x2 matrix.-
+
+And look at this:
+
+``` r
+> A[3]
+[1] 5
+```
+
+Here R treated A, which is 2x2, as a 4-element vector.
+
+# Lesson 3: Linear Combinations of Vectors, Matrix Rank
+
+In data science, a common approach to dealing with very large datasets
+is to find a *low-rank approximation*.  Say we have medical data, with
+450 variables for each patient (height, weight, age, waking pulse rate,
+disease history etc.).  Analysis with so many variables might be
+unweildy.  We cannot go into details here, but matrices are involved,
+and one type would be 450x450.  A low-rank, say m, and would be reduce
+the size of the matrix to mxm.  So, what is rank?
+
+First, we need the notion of a *linear combination* of vectors, which is
+a sum of scalar products of vectors.  E.g.
+
+3 (3,2) - 0.5 (12,8) = (3,-1)
+
+The 3 and -0.5 are the *coefficients* in the linear combination.
+
+That leads to the notion of *matrix rank*.  Consider the matrix M:
+
+$$
+M = \left (
+\begin{array}{rrr}
+3 & 2 & 0.5 \\
+2 & -2 & 0 \\
+4 & 1 & 0.5 \\
+\end{array}
+\right )
+$$
+
+Row 3 of M happens to be 1 times Row 1 + 0.5 times Row 2.  So, Row 3 is
+a linear combination of Rows 1 and 2.  And put another way,
+
+1 Row 1 + 0.5 Row 2 - Row 3 = (0,0,0)
+
+We say that the rows of M are *linearly dependent*, meaning that there
+exists some linear combination of its rows that equals the 0 vector,
+where at least one coefficient is nonzero.  If no such linear
+combination were to exist, we would say the rows are *linearly
+independent*.

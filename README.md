@@ -2,7 +2,7 @@
 
 # <span style="color:blue">fastLinearAlgebra</span>
 
-Quick review of linear algebra. 
+Quick REVIEW of linear algebra. 
 
 ## Author:
 
@@ -16,8 +16,9 @@ UC Davis <br>
 The main target audience is data science students and professionals who
 have some previous background in linear algebra but now need a review.
 
-The R language is used for examples but is not necessary for following
-the mathematical presentation.
+The R language is used for examples and discussion on use of R in linear
+algebra, but is not necessary for following the mathematical
+presentation.
 
 # Lesson 1: Vectors and Dot Products
 
@@ -114,7 +115,7 @@ correspondence between linear equations and inner prodcts, we define a
 matrix-vactor product this way:
 
 > Mv is a new vector, of the same length as v.  The i<sup>th</sup>
-> number in the new vecotr is the inner product with row i of M with v.
+> number in the new vector is the inner product with row i of M with v.
 
 In R:
 
@@ -139,8 +140,7 @@ mTimesv(u,v)
 # 20.5 17.0
 ```
 
-So, the matrix-vector product Mv in our simultaneous linear equations
-example above is equal to
+So, the matrix-vector product Mv for M and v as above is equal to
 
 $$
 \left (
@@ -193,9 +193,9 @@ We built matrix-vector multiplication by using dot product as the base.
 Now we will in turn build matrix-matrix multiplication by using
 matrix-vector multiplication as the base.
 
-> The matrix-matrix product is a new matrix having the same number of
-> rows as M and the same number of columns as Q.
-> The j<sup>th</sup> column of a matrix-matrix product MQ is the product
+> The matrix-matrix product MQ is a new matrix having the same number of
+> rows as M and the same number of columns as Q.  The j<sup>th</sup> 
+> column of a matrix-matrix product MQ is the matrix-vector product
 > of M with the j<sup>th</sup> column of Q.
 
 In R:
@@ -230,23 +230,12 @@ way, called *partitioned matrices*.
 ## Partitioned matrices: an invaluable visualization tool 
 
 Look at our matrix-vector product Mv.  Let's denote row i of M by
-M<sub>i.</sub>.  Then our building matrix-vector product 
+M<sub>i.</sub>.  Then our building of the matrix-vector product 
 can be displayed--and most important, visualized--symbolicly. 
 For an r-row matrix M and a conformable vector v, we think of Mv as
 
 $$
 \left (
-\begin{array}{r}
-M_{1.} \\
-M_{2.} \\
-... \\
-M_{r.} \\
-\end{array}
-\right ) v
-$$
-
-$$
-= \left (
 \begin{array}{r}
 M_{1.} v \\
 M_{2.}  v\\
@@ -314,7 +303,8 @@ is not efficient.  Instead, we use a special operator, %*%.
 ```
 
 The %*% operator is written in C, so it is faster.  So, use it rather
-than mtimesq(), but keep the latter in mind for visualization purposes.
+than mtimesq(), but keep the code structuroe of the latter in mind for
+visualization purposes.
 
 ### Internal storage
 
@@ -325,7 +315,7 @@ word size in bytes.)  But a matrix is two-dimensional, i.e. nonlinear.
 So, how is a matrix stored?
 
 The two main storage schemes are *column-major order* and 
-*row-major order*.  C uses the former, while R uses the latter,
+*row-major order*.  C uses the latter, while R uses the former,
 meaning that first all of column 1 is stored, then column 2, etc.
 
 So for instance the matrix A above is stored as 4, 8, 5, 9.  Indeed, we
@@ -359,7 +349,7 @@ and it did the multiplication.  And look at this one:
 [1,]   28   33
 ```
 
-R treated the (3,2) as a 1x2 matrix.-
+R treated the (3,2) as a 1x2 matrix.
 
 And look at this:
 
@@ -377,8 +367,8 @@ is to find a *low-rank approximation*.  Say we have medical data, with
 450 variables for each patient (height, weight, age, waking pulse rate,
 disease history etc.).  Analysis with so many variables might be
 unweildy.  We cannot go into details here, but matrices are involved,
-and one type would be 450x450.  A low-rank, say m, and would be reduce
-the size of the matrix to mxm.  So, what is rank?
+and one type would be 450x450.  A low-rank version, say rank m, and
+would reduce the size of the matrix to mxm.  So, what is rank?
 
 First, we need the notion of a *linear combination* of vectors, which is
 a sum of scalar products of vectors.  E.g.
@@ -405,7 +395,180 @@ a linear combination of Rows 1 and 2.  And put another way,
 1 Row 1 + 0.5 Row 2 - Row 3 = (0,0,0)
 
 We say that the rows of M are *linearly dependent*, meaning that there
-exists some linear combination of its rows that equals the 0 vector,
-where at least one coefficient is nonzero.  If no such linear
-combination were to exist, we would say the rows are *linearly
-independent*.
+exists some linear combination of its rows that equals the 0 vector
+(vector consisting of all 0s), where at least one coefficient of the
+linaar combination is nonzero.  If no such linear combination were to
+exist, we would say the rows are *linearly independent*.
+
+In this case, although the set of three rows is not linearly
+independent, any two of them are so.  We say that the rank of this
+matrix is 2.
+
+> The rank of a matrix (not necessarily a square matrix) is the maximal number
+> of linearly independent rows.
+
+Actually it turns out that we can define in terms of linearly
+independent columns too--the row rank and column rank of a matrix can be
+proven to be equal.  One implication of that is:
+
+> The rank of an n x m matrix is at most min(n,m).
+
+A matrix is said to be of *full rank* if its rank achieves that upper
+bound.  E.g. if a matrix is of size 6x4 and has rank 4, it is of full
+rank.
+
+Another important inequality is
+
+> The rank of the matrix product AB is at most the minimum of the rank
+> of A and the rank of B.
+
+# Lesson 4: Matrix Transpose and Inverse
+
+## Transpose
+
+> Given any (not necessary square) matrix A, its *transpose* is the matrix
+> obtained by exchanging rows and columns.  We use ' or t to denote
+> transpose, i.e. A' or A<sup>t</sup>.
+
+In R, the t() function implements transpose.
+
+``` r
+> W <- matrix(1:6,nrow=2)
+> W
+     [,1] [,2] [,3]
+[1,]    1    3    5
+[2,]    2    4    6
+> t(W)
+     [,1] [,2]
+[1,]    1    2
+[2,]    3    4
+[3,]    5    6
+```
+
+## Diagonal matrices, identity matrix
+
+A useful function in R is diag(), which produces a square matrix with 0s
+in the off-diagonal positions:
+
+``` r
+> diag(c(1,2,5))
+     [,1] [,2] [,3]
+[1,]    1    0    0
+[2,]    0    2    0
+[3,]    0    0    5
+```
+
+An important special case is that of the *identity matrix*, generally
+denoted by I, which acts like a multiplicative 1 in numbers:
+
+``` r
+> I <- diag(3)
+> I
+     [,1] [,2] [,3]
+[1,]    1    0    0
+[2,]    0    1    0
+[3,]    0    0    1
+> B <- matrix(c(3,1,0,0.1,1,1,2:4),ncol=3)
+> B
+     [,1] [,2] [,3]
+[1,]    3  0.1    2
+[2,]    1  1.0    3
+[3,]    0  1.0    4
+> I %*% B
+     [,1] [,2] [,3]
+[1,]    3  0.1    2
+[2,]    1  1.0    3
+[3,]    0  1.0    4
+> B %*% I
+     [,1] [,2] [,3]
+[1,]    3  0.1    2
+[2,]    1  1.0    3
+[3,]    0  1.0    4
+```
+
+Even though we speak of "the" identity matrix, of course there are
+different ones for each matrix size, i.e. 2x2, 3x3 etc.
+
+## Inverse
+
+Since matrix algebra has something analogous to the number 1, maybe it
+also has something like "division"?  For some matrices, yes.
+
+> For a given square matrix A, if there is another square matrix B such
+> that AB = I (which actually will also imply that BA = I), we say that B
+> is the *inverse* of A, and write B = A<sup>-1</sup>.  And, A will have
+> an inverse if and only if it is of full rank.
+
+So A<sup>-1</sup> is roughly analogous to "1/A" in the numbers world.
+Square matrices of less than full rank have no inverse, just as 0 has no
+reciprocal in the numbers world.  Such matrices are called *singular*.
+
+In R, we can obtain the inverse of a matrix using the solve() function:
+
+``` r
+> C <- rbind(1:3,c(2,0,0),c(1,5,12))
+> C
+     [,1] [,2] [,3]
+[1,]    1    2    3
+[2,]    2    0    0
+[3,]    1    5   12
+> D <- solve(C)
+> D
+           [,1]       [,2]       [,3]
+[1,]  0.0000000  0.5000000  0.0000000
+[2,]  1.3333333 -0.5000000 -0.3333333
+[3,] -0.5555556  0.1666667  0.2222222
+> C %*% D
+     [,1]         [,2]         [,3]
+[1,]    1 1.110223e-16 1.110223e-16
+[2,]    0 1.000000e+00 0.000000e+00
+[3,]    0 0.000000e+00 1.000000e+00
+```
+
+Note that we got a bit of roundoff error.  We can't avoid this entirely,
+but there are advanced functions that reduce it.
+
+In our old formulation of a set of linear equations as Mv = w,
+we see now how to solve for v:
+
+v = M<sup>-1</sup> w
+
+# Lesson 5: Eigenvalues and Eigenvectors
+
+> Let A be a square matrix.  If there is a nonzero vector v and a number 
+> &lambda; such that Av = &lambda; v, we say that &lambda; is an 
+> *eigenvalue* of A, with *eigenvector* v.
+
+Note: "Nonzero vector means "not all elements are 0s.  The zero vector
+is one in which all elements are 0s.
+
+This notion also plays a key role in the low-rank approximation
+processes we mentioned earlier as being key to data science.
+
+We can use the eigen() function for this, e.g.:
+
+``` r
+> eigen(C)
+eigen() decomposition
+$values
+[1] 12.4839914  1.4861788 -0.9701703
+
+$vectors
+          [,1]       [,2]       [,3]
+[1,] 0.2592994 -0.5462472  0.4164962
+[2,] 0.0415411 -0.7351030 -0.8586044
+[3,] 0.9649032  0.4015440  0.2988801
+> C %*% eigs$vectors[,1]
+           [,1]
+[1,]  3.2370912
+[2,]  0.5185987
+[3,] 12.0458432
+> eigs$values[1] * eigs$vectors[,1]
+[1]  3.2370912  0.5185987 12.0458432
+# yes, they are equal
+```
+
+# Lessons 6 and Beyond
+
+(Under construction.)
+

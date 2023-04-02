@@ -58,7 +58,7 @@ e.g.
 
 3a + 2b = 8
 <br>
-a - 2b = 4
+2a - 2b = 4
 
 But now the point is that, say, that first equation can be written as
 
@@ -66,7 +66,7 @@ But now the point is that, say, that first equation can be written as
 
 and the second as 
 
-> dot product of (1,-2) with (a,b) = 4
+> dot product of (2,-2) with (a,b) = 4
 
 This motivates the *matrix equation*
 
